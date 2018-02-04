@@ -975,5 +975,9 @@ public final class Utilities {
             return false;
         }
     }
+
+    public static boolean isWorkspaceEditAllowed(Context context) {
+        return !LauncherPrefs.WORKSPACE_LOCK.get(context);
+    }
 }
 
