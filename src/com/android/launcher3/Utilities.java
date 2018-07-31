@@ -32,6 +32,8 @@ import android.app.ActivityOptions;
 import android.app.Person;
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
+
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -130,6 +132,8 @@ public final class Utilities {
 
     @IntDef({TRANSLATE_UP, TRANSLATE_DOWN, TRANSLATE_LEFT, TRANSLATE_RIGHT})
     public @interface AdjustmentDirection{}
+
+    public static final String GSA_PACKAGE = "com.google.android.googlequicksearchbox";
 
     /**
      * Returns true if theme is dark.
@@ -942,4 +946,13 @@ public final class Utilities {
         return reduceWorkspaceBlurUsage() && context.getResources().getBoolean(
                 R.bool.reduce_workspace_blur_usage);
     }
+
+    public static boolean isGSAEnabled(Context context) {
+        try {
+            return context.getPackageManager().getApplicationInfo(GSA_PACKAGE, 0).enabled;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
 }
+
