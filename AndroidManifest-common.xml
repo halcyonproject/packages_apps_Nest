@@ -62,6 +62,8 @@
     <uses-permission android:name="com.android.permission.MANAGE_PARALLEL_SPACES" />
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
 
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
     <!--
     Permissions required for read/write access to the workspace data. These permission name
     should not conflict with that defined in other apps, as such an app should embed its package
@@ -253,5 +255,11 @@
         <property
             android:name="android.window.PROPERTY_ACTIVITY_EMBEDDING_SPLITS_ENABLED"
             android:value="true" />
+
+        <activity
+            android:name="com.android.launcher3.lineage.trust.TrustAppsActivity"
+            android:label="@string/trust_apps_manager_name"
+            android:theme="@android:style/Theme.DeviceDefault.Settings"
+            android:autoRemoveFromRecents="true" />
     </application>
 </manifest>
