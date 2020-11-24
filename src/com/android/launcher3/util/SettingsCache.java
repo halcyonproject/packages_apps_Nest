@@ -19,6 +19,10 @@ package com.android.launcher3.util;
 import static android.provider.Settings.System.ACCELEROMETER_ROTATION;
 
 import static com.android.launcher3.concurrent.annotations.LightweightBackgroundPriority.UI;
+import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+
+import com.android.launcher3.util.SafeCloseable;
+import kotlin.Unit;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -150,6 +154,37 @@ public class SettingsCache extends ContentObserver {
     private void registerUriAsync(Uri uri) {
         mLightweightBackgroundExecutor.execute(
                 () -> mResolver.registerContentObserver(uri, false, this));
+    }
+
+    private final Map<OnChangeListener, SafeCloseable> mLegacyListeners = new ConcurrentHashMap<>();
+
+    /**
+     * Call to receive updates on the given {@param listener}.
+     */
+    @AnyThread
+    public void register(Uri uri, OnChangeListener changeListener) {
+        SafeCloseable closeable = getListenableRef(uri).forEach(
+                MAIN_EXECUTOR,
+                v -> {
+                    changeListener.onSettingsChanged(v);
+                    return Unit.INSTANCE;
+                });
+        mLegacyListeners.put(changeListener, closeable);
+    }
+
+    /**
+     * Call to stop receiving updates on the given {@param listener}.
+     */
+    @AnyThread
+    public void unregister(Uri uri, OnChangeListener listener) {
+        SafeCloseable closeable = mLegacyListeners.remove(listener);
+        if (closeable != null) {
+            closeable.close();
+        }
+    }
+
+    public interface OnChangeListener {
+        void onSettingsChanged(boolean isEnabled);
     }
 
     /**
