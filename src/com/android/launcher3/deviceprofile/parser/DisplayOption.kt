@@ -18,6 +18,7 @@ package com.android.launcher3.deviceprofile.parser
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.PointF
+import com.android.launcher3.LauncherPrefs
 import com.android.launcher3.R
 import com.android.launcher3.deviceprofile.parser.DeviceTypedMap.COUNT_SIZES
 import com.android.launcher3.deviceprofile.parser.DeviceTypedMap.INDEX_DEFAULT
@@ -112,6 +113,11 @@ private constructor(@JvmField val grid: GridOption, context: Context, ta: TypedA
             }
             .toFloatArray()
 
+    private val iconSizeModifier: Float =
+        LauncherPrefs.ICON_SIZE.get(context).toFloat() / 100f
+    private val fontSizeModifier: Float =
+        LauncherPrefs.FONT_SIZE.get(context).toFloat() / 100f
+
     @JvmField
     val iconSizes: FloatArray =
         ta.parseTypedMap(
@@ -121,7 +127,11 @@ private constructor(@JvmField val grid: GridOption, context: Context, ta: TypedA
                 R.styleable.ProfileDisplayOption_iconSizeTwoPanelPortrait,
                 R.styleable.ProfileDisplayOption_iconSizeTwoPanelLandscape,
             ) { i, v ->
-                getFloat(i, v)
+                if (i == R.styleable.ProfileDisplayOption_iconImageSize) {
+                    getFloat(i, v) * iconSizeModifier
+                } else {
+                    getFloat(i, v)
+                }
             }
             .toFloatArray()
 
@@ -134,7 +144,11 @@ private constructor(@JvmField val grid: GridOption, context: Context, ta: TypedA
                 R.styleable.ProfileDisplayOption_iconTextSizeTwoPanelPortrait,
                 R.styleable.ProfileDisplayOption_iconTextSizeTwoPanelLandscape,
             ) { i, v ->
-                getFloat(i, v)
+                if (i == R.styleable.ProfileDisplayOption_iconTextSize) {
+                    getFloat(i, v) * fontSizeModifier
+                } else {
+                    getFloat(i, v)
+                }
             }
             .toFloatArray()
 
