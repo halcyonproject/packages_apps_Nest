@@ -20,13 +20,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.android.launcher3.R
+import com.android.launcher3.Utilities
 import javax.inject.Inject
 
 /** Wrapper class for qsb widget inflation to allow easier override */
 open class QsbWidgetFactory @Inject constructor() {
 
     open fun createView(container: ViewGroup): View {
+        val layout = if (Utilities.showQSB(container.context)) {
+            R.layout.search_container_hotseat
+        } else {
+            R.layout.empty_view
+        }
         return LayoutInflater.from(container.context)
-            .inflate(R.layout.qsb_container_hotseat, container, false)
+            .inflate(layout, container, false)
     }
 }

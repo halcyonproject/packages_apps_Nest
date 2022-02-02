@@ -281,6 +281,7 @@ public class TaskbarView extends FrameLayout implements FolderIcon.FolderIconPar
             mTaskbarPinnedOverflowView = TaskbarOverflowView.inflateIcon(OverflowType.PINNED, this,
                     mIconTouchSize, mItemPadding);
         }
+
     }
 
     /**
