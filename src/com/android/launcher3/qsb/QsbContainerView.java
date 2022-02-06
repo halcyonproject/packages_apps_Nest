@@ -6,6 +6,7 @@ import android.content.Context;
 import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.android.launcher3.Utilities;
 
 public class QsbContainerView {
     public static final String SEARCH_ENGINE_SETTINGS_KEY = "selected_search_engine";
@@ -24,6 +25,9 @@ public class QsbContainerView {
                     }
                 } catch (IllegalStateException e) {
                 }
+            }
+            if (providerPkg == null && Utilities.isGSAEnabled(context)) {
+                providerPkg = Utilities.GSA_PACKAGE;
             }
         }
         return providerPkg;
