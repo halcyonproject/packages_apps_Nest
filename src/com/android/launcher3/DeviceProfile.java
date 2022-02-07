@@ -138,6 +138,10 @@ public class DeviceProfile {
     // Taskbar
     private TaskbarProfile mTaskbarProfile;
 
+    // Meminfo in overview
+    public int memInfoMarginGesturePx;
+    public int memInfoMarginThreeButtonPx;
+
     /** Used only as an alternative to mocking when null values cannot be used. */
     @VisibleForTesting
     public DeviceProfile() {
@@ -363,6 +367,10 @@ public class DeviceProfile {
                     mResponsiveWorkspaceCellSpec);
         }
 
+        memInfoMarginGesturePx = res.getDimensionPixelSize(
+                R.dimen.meminfo_bottom_margin_gesture);
+        memInfoMarginThreeButtonPx = res.getDimensionPixelSize(
+                R.dimen.meminfo_bottom_margin_three_button);
         mWorkspaceProfile = WorkspaceProfile.Factory.createWorkspaceProfile(
                 /*context*/ context,
                 /*res*/ context.getResources(),
