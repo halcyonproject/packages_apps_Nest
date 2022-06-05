@@ -122,6 +122,7 @@ public class DeviceProfile {
     private FolderProfile mFolderProfile;
     private AllAppsProfile mAllAppsProfile;
     private float allAppsCellHeightMultiplier;
+    private boolean allAppsIconText;
     private final OverviewProfile overviewProfile;
 
     // Hotseat
@@ -249,6 +250,7 @@ public class DeviceProfile {
 
         allAppsCellHeightMultiplier =
                 (float) LauncherPrefs.ROW_HEIGHT.get(context) / 100F;
+        allAppsIconText = LauncherPrefs.SHOW_DRAWER_LABELS.get(context);
         // Some foldable portrait modes are too wide in terms of aspect ratio so we need to tweak
         // the dimensions for edit state.
         final boolean shouldApplyWidePortraitDimens = mDeviceProperties.isLargeScreen()
@@ -417,15 +419,27 @@ public class DeviceProfile {
             hideWorkspaceLabelsIfNotEnoughSpace();
         }
 
-        int allAppsCellHeight = (int) ((float) getAllAppsProfile().getCellHeightPx()
-                * allAppsCellHeightMultiplier);
-        if (LauncherPrefs.ENABLE_TWOLINE_ALLAPPS_TOGGLE.get(context)
-                && !(mIsResponsiveGrid && getAllAppsProfile().getMaxAllAppsTextLineCount() == 2)) {
-            allAppsCellHeight += Utilities.calculateTextHeight(
-                    getAllAppsProfile().getIconTextSizePx());
-        }
-        if (allAppsCellHeight != getAllAppsProfile().getCellHeightPx()) {
-            mAllAppsProfile = getAllAppsProfile().copyWithCellHeightPx(allAppsCellHeight);
+        if (!allAppsIconText) {
+            int leftRightPadding =
+                    getWorkspaceProfile().getDesiredWorkspaceHorizontalMarginPx();
+            int drawerWidth =
+                    mDeviceProperties.getAvailableWidthPx() - leftRightPadding * 2;
+
+            int cellWidth = drawerWidth / mAllAppsProfile.getNumShownAllAppsColumns();
+            int cellHeight = (int) (cellWidth * allAppsCellHeightMultiplier);
+
+            mAllAppsProfile = getAllAppsProfile().copyWithCellHeightPx(cellHeight);
+        } else {
+            int allAppsCellHeight = (int) ((float) getAllAppsProfile().getCellHeightPx()
+                    * allAppsCellHeightMultiplier);
+            if (LauncherPrefs.ENABLE_TWOLINE_ALLAPPS_TOGGLE.get(context)
+                    && !(mIsResponsiveGrid && getAllAppsProfile().getMaxAllAppsTextLineCount() == 2)) {
+                allAppsCellHeight += Utilities.calculateTextHeight(
+                        getAllAppsProfile().getIconTextSizePx());
+            }
+            if (allAppsCellHeight != getAllAppsProfile().getCellHeightPx()) {
+                mAllAppsProfile = getAllAppsProfile().copyWithCellHeightPx(allAppsCellHeight);
+            }
         }
 
         mBottomSheetProfile = BottomSheetProfile.Factory.createBottomSheetProfile(
