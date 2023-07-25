@@ -218,7 +218,7 @@ android_library {
 // Build rule for Launcher3 app.
 //
 android_app {
-    name: "Launcher3",
+    name: "Nest",
 
     static_libs: [
         "Launcher3CommonDepsLib",
@@ -348,7 +348,7 @@ android_library {
 
 // Build rule for Launcher3 Go app for Android Go devices.
 android_app {
-    name: "Launcher3Go",
+    name: "Nest3Go",
 
     static_libs: ["Launcher3CommonDepsLib"],
 
@@ -373,7 +373,10 @@ android_app {
         "Home",
         "Launcher2",
         "Launcher3",
+        "Nest",
         "Launcher3QuickStep",
+        "NestQuickStep",
+	
     ],
     required: ["privapp_whitelist_com.android.launcher3"],
 
@@ -391,7 +394,7 @@ android_app {
 
 // Build rule for Quickstep app.
 android_app {
-    name: "Launcher3QuickStep",
+    name: "NestQuickStep",
 
     static_libs: ["Launcher3QuickStepLib"],
     optimize: {
@@ -427,7 +430,7 @@ android_app {
 
 // Build rule for Launcher3 Go app with quickstep for Android Go devices.
 android_app {
-    name: "Launcher3QuickStepGo",
+    name: "NestQuickStepGo",
 
     static_libs: [
         "SystemUI-statsd",
