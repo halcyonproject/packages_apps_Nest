@@ -290,6 +290,10 @@ public class RectFSpringAnim extends ReleaseCheck {
             onUpdate();
         }
 
+        mRectXAnimEnded = true;
+        mRectYAnimEnded = true;
+        mRectScaleAnimEnded = true;
+        maybeOnEnd();
     }
 
     private boolean isEnded() {
