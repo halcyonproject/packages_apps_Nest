@@ -92,6 +92,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BlendMode;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.PointF;
@@ -5075,7 +5076,6 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
         mTempRectF.set(mTempRect);
         FloatingTaskView firstFloatingTaskView =
                 mSplitSelectStateController.getFirstFloatingTaskView();
-        if (firstFloatingTaskView == null) return false;
         firstFloatingTaskView.updateOrientationHandler(getPagedOrientationHandler());
         firstFloatingTaskView.update(mTempRectF, /*progress=*/1f);
 

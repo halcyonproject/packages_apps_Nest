@@ -189,6 +189,12 @@ public class LauncherModel implements InstallSessionTracker.Callback {
                 owner);
     }
 
+    public void onPackageChanged(
+            @NonNull final String packageName, @NonNull final UserHandle user) {
+        int op = PackageUpdatedTask.OP_UPDATE;
+        enqueueModelUpdateTask(new PackageUpdatedTask(op, user, packageName));
+    }
+
     /**
      * Called when the icon for an app changes, outside of package event
      */

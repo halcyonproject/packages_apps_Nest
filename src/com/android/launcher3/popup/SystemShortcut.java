@@ -48,6 +48,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.launcher3.AbstractFloatingView;
+import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.Flags;
 import com.android.launcher3.R;
 import com.android.launcher3.SecondaryDropTarget;
@@ -82,6 +83,7 @@ import java.util.List;
 public abstract class SystemShortcut<T extends ActivityContext> extends ItemInfo
         implements View.OnClickListener {
 
+    private static final String TAG = SystemShortcut.class.getSimpleName();
     private final int mIconResId;
     protected final int mLabelResId;
     protected int mAccessibilityActionId;
@@ -164,9 +166,9 @@ public abstract class SystemShortcut<T extends ActivityContext> extends ItemInfo
         }
     }
 
-    public static final Factory<ActivityContext> APP_INFO = AppInfo::new;
+    public static final Factory<BaseDraggingActivity> APP_INFO = AppInfo::new;
 
-    public static class AppInfo<T extends ActivityContext> extends SystemShortcut<T> {
+    public static class AppInfo<T extends Context & ActivityContext> extends SystemShortcut<T> {
 
         @Nullable
         private SplitAccessibilityInfo mSplitA11yInfo;
