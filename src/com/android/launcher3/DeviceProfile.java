@@ -42,6 +42,7 @@ import androidx.annotation.VisibleForTesting;
 
 import com.android.launcher3.CellLayout.ContainerType;
 import com.android.launcher3.InvariantDeviceProfile.DisplayOptionSpec;
+import com.android.launcher3.LauncherPrefs;
 import com.android.launcher3.deviceprofile.AllAppsProfile;
 import com.android.launcher3.deviceprofile.BottomSheetProfile;
 import com.android.launcher3.deviceprofile.DeviceConfiguration;
@@ -413,7 +414,7 @@ public class DeviceProfile {
             hideWorkspaceLabelsIfNotEnoughSpace();
         }
 
-        if (inv.enableTwoLinesInAllApps
+        if (LauncherPrefs.ENABLE_TWOLINE_ALLAPPS_TOGGLE.get(context)
                 && !(mIsResponsiveGrid && getAllAppsProfile().getMaxAllAppsTextLineCount() == 2)) {
             // Add extra textHeight to the existing allAppsCellHeight.
             mAllAppsProfile = getAllAppsProfile().copyWithCellHeightPx(
