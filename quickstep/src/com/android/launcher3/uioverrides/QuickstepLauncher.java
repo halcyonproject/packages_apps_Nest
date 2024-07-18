@@ -528,7 +528,7 @@ public class QuickstepLauncher extends Launcher {
 
     @Override
     public void bindExtraContainerItems(FixedContainerItems item) {
-        Log.d(TAG, "Bind extra container items. ContainerId = " + item.containerId);
+        //Log.d(TAG, "Bind extra container items. ContainerId = " + item.containerId);
         if (item.containerId == Favorites.CONTAINER_PREDICTION) {
             mAllAppsPredictions = item;
             PredictionRowView<?> predictionRowView =
@@ -536,7 +536,7 @@ public class QuickstepLauncher extends Launcher {
                             PredictionRowView.class);
             predictionRowView.setPredictedApps(item.items);
         } else if (item.containerId == Favorites.CONTAINER_HOTSEAT_PREDICTION) {
-            Log.d(TAG, "Bind extra container item is hotseat prediction");
+            //Log.d(TAG, "Bind extra container item is hotseat prediction");
             mHotseatPredictionController.setPredictedItems(item);
         } else if (item.containerId == Favorites.CONTAINER_WIDGETS_PREDICTION) {
             getPopupDataProvider().setRecommendedWidgets(item.items);
