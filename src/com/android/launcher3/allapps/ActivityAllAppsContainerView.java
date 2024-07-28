@@ -112,20 +112,6 @@ public class ActivityAllAppsContainerView<T extends Context & ActivityContext>
         OnDeviceProfileChangeListener, PersonalWorkSlidingTabStrip.OnActivePageChangedListener,
         ScrimView.ScrimDrawingController {
 
-
-    public static final FloatProperty<ActivityAllAppsContainerView<?>> BOTTOM_SHEET_ALPHA =
-            new FloatProperty<>("bottomSheetAlpha") {
-                @Override
-                public Float get(ActivityAllAppsContainerView<?> containerView) {
-                    return containerView.mBottomSheetAlpha;
-                }
-
-                @Override
-                public void setValue(ActivityAllAppsContainerView<?> containerView, float v) {
-                    containerView.setBottomSheetAlpha(v);
-                }
-            };
-
     public static final float PULL_MULTIPLIER = .02f;
     public static final float FLING_VELOCITY_MULTIPLIER = 1200f;
     protected static final String BUNDLE_KEY_CURRENT_PAGE = "launcher.allapps.current_page";
@@ -186,7 +172,6 @@ public class ActivityAllAppsContainerView<T extends Context & ActivityContext>
     private float[] mBottomSheetCornerRadii;
     private ScrimView mScrimView;
     private int mBottomSheetBackgroundColor;
-    private float mBottomSheetAlpha = 1f;
     private boolean mForceBottomSheetVisible;
     private int mTabsProtectionAlpha;
     @Nullable private AllAppsTransitionController mAllAppsTransitionController;
@@ -317,7 +302,7 @@ public class ActivityAllAppsContainerView<T extends Context & ActivityContext>
                 0 // Bottom left
         };
         mBottomSheetBackgroundColor =
-                Themes.getAttrColor(getContext(), R.attr.materialColorSurfaceDim);
+                Themes.getAttrColor(getContext(), R.attr.allAppsScrimColor);
         updateBackgroundVisibility(mActivityContext.getDeviceProfile());
         mSearchUiManager.initializeSearch(this);
     }
@@ -1027,11 +1012,6 @@ public class ActivityAllAppsContainerView<T extends Context & ActivityContext>
         // so its header protection is derived from this scrim instead.
     }
 
-    private void setBottomSheetAlpha(float alpha) {
-        // Bottom sheet alpha is always 1 for tablets.
-        mBottomSheetAlpha = mActivityContext.getDeviceProfile().isTablet ? 1f : alpha;
-    }
-
     private void updateMatcher() {
         mPersonalMatcher = ItemInfoMatcher.ofUser(
                 Process.myUserHandle()).or(ItemInfoMatcher.ofUsers(
@@ -1412,7 +1392,7 @@ public class ActivityAllAppsContainerView<T extends Context & ActivityContext>
         // Draw full background panel for tablets.
         if (hasBottomSheet) {
             mHeaderPaint.setColor(mBottomSheetBackgroundColor);
-            mHeaderPaint.setAlpha((int) (255 * mBottomSheetAlpha));
+            mHeaderPaint.setAlpha((int) (Utilities.getAllAppsOpacity(getContext()) * 255 / 100));
 
             mTmpRectF.set(
                     leftWithScale,
