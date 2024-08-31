@@ -88,8 +88,12 @@ data class AllAppsProfile(
         ): AllAppsProfile {
             val allAppsBorderSpacePx =
                 calculateAllAppsBorderSpacePx(inv, metric, typeIndex, workspaceProfile.scale)
+            var cellHeightDp = inv.allAppsCellSize[typeIndex].y
+            if (cellHeightDp <= 0f) {
+                cellHeightDp = inv.minCellSize[typeIndex].y
+            }
             var allAppsCellHeightPx =
-                (pxFromDp(inv.allAppsCellSize[typeIndex].y, metric) + allAppsBorderSpacePx.y)
+                (pxFromDp(cellHeightDp, metric) + allAppsBorderSpacePx.y)
             var allAppsIconSizePx = pxFromDp(inv.allAppsIconSize[typeIndex], metric)
             val allAppsIconTextSizePx =
                 pxFromSp(inv.allAppsIconTextSize[typeIndex], metric).toFloat()
@@ -100,8 +104,16 @@ data class AllAppsProfile(
                         ((workspaceProfile.iconSizePx -
                             getIconVisibleSizePx(workspaceProfile.iconSizePx)) / 2)),
                 )
+            var cellWidthDp = inv.allAppsCellSize[typeIndex].x
+            if (cellWidthDp <= 0f) {
+                cellWidthDp = inv.minCellSize[typeIndex].x
+            }
             var allAppsCellWidthPx =
-                pxFromDp(inv.allAppsCellSize[typeIndex].x, metric, workspaceProfile.scale)
+                if (cellWidthDp > 0f) {
+                    pxFromDp(cellWidthDp, metric, workspaceProfile.scale)
+                } else {
+                    workspaceProfile.cellWidthPx
+                }
 
             if (allAppsCellWidthPx < allAppsIconSizePx) {
                 // If allAppsCellWidth no longer fit allAppsIconSize, reduce allAppsBorderSpace to

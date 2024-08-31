@@ -62,8 +62,31 @@ object DeviceTypedMap {
         indexTwoPanelLandscapeX: Int,
         indexTwoPanelLandscapeY: Int,
     ) =
-        parseTypedMap(
+        parsePointMap(
             PointF(0f, 0f),
+            indexDefaultX,
+            indexDefaultY,
+            indexLandscapeX,
+            indexLandscapeY,
+            indexTwoPanelPortraitX,
+            indexTwoPanelPortraitY,
+            indexTwoPanelLandscapeX,
+            indexTwoPanelLandscapeY,
+        )
+
+    fun TypedArray.parsePointMap(
+        defaultPoint: PointF,
+        indexDefaultX: Int,
+        indexDefaultY: Int,
+        indexLandscapeX: Int,
+        indexLandscapeY: Int,
+        indexTwoPanelPortraitX: Int,
+        indexTwoPanelPortraitY: Int,
+        indexTwoPanelLandscapeX: Int,
+        indexTwoPanelLandscapeY: Int,
+    ) =
+        parseTypedMap(
+            defaultPoint,
             indexDefaultX to indexDefaultY,
             indexLandscapeX to indexLandscapeY,
             indexTwoPanelPortraitX to indexTwoPanelPortraitY,

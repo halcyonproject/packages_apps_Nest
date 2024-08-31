@@ -155,6 +155,7 @@ private constructor(@JvmField val grid: GridOption, context: Context, ta: TypedA
     @JvmField
     val allAppsCellSize: Array<PointF> =
         ta.parsePointMap(
+            minCellSize[INDEX_DEFAULT],
             R.styleable.ProfileDisplayOption_allAppsCellWidth,
             R.styleable.ProfileDisplayOption_allAppsCellHeight,
             R.styleable.ProfileDisplayOption_allAppsCellWidthLandscape,
@@ -174,7 +175,12 @@ private constructor(@JvmField val grid: GridOption, context: Context, ta: TypedA
                 R.styleable.ProfileDisplayOption_allAppsIconSizeTwoPanelPortrait,
                 R.styleable.ProfileDisplayOption_allAppsIconSizeTwoPanelLandscape,
             ) { i, v ->
-                getFloat(i, v)
+                if (i == R.styleable.ProfileDisplayOption_allAppsIconSize) {
+                    val size = getFloat(i, 0f)
+                    if (size == 0f) iconSizes[INDEX_DEFAULT] else size * iconSizeModifier
+                } else {
+                    getFloat(i, v)
+                }
             }
             .toFloatArray()
 
