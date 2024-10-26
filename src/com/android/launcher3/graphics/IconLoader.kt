@@ -80,10 +80,11 @@ constructor(
         if (info is PendingAddShortcutInfo) {
             mainIcon = loadFullResIcon(iconCache, info.getActivityInfo(context))
         } else if (info.itemType == Favorites.ITEM_TYPE_APPLICATION) {
+            val intent = info.intent ?: return null
             val activityInfo =
                 context
                     .getSystemService(LauncherApps::class.java)
-                    ?.resolveActivity(info.intent, info.user) ?: return null
+                    ?.resolveActivity(intent, info.user) ?: return null
             mainIcon =
                 if (
                     info is ItemInfoWithIcon && info.container == Favorites.CONTAINER_PRIVATESPACE
