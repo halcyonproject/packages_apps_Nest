@@ -54,6 +54,7 @@
     <uses-permission android:name="android.permission.FORCE_STOP_PACKAGES" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_CONTEXTUAL_SEARCH"/>
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
     
     <permission android:name="com.google.android.apps.nexuslauncher.permission.QSB" android:protectionLevel="signatureOrSystem"/>
     <uses-permission android:name="com.google.android.apps.nexuslauncher.permission.QSB"/>
