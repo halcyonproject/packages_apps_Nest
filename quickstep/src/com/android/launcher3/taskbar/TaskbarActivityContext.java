@@ -1612,7 +1612,9 @@ public class TaskbarActivityContext extends BaseTaskbarContext {
         if (isPhoneMode()) {
             return isThreeButtonNav() ?
                     resources.getDimensionPixelSize(R.dimen.taskbar_phone_size) :
-                    resources.getDimensionPixelSize(R.dimen.taskbar_stashed_size);
+                    SettingsCache.INSTANCE.get(this).getValue(NAVIGATION_BAR_HINT_URI) ?
+                    resources.getDimensionPixelSize(R.dimen.taskbar_stashed_size) :
+                    0;
         }
 
         int bubbleBarTop = mControllers.bubbleControllers.map(bubbleControllers ->
