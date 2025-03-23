@@ -52,6 +52,7 @@
     <uses-permission android:name="com.android.systemui.permission.LAUNCH_ACCESSIBILITY_SHORTCUT_CHOOSER_DIALOG" />
     <uses-permission android:name="android.permission.DEVICE_POWER" />
 
+    <uses-permission android:name="android.permission.ACCESS_CONTEXTUAL_SEARCH"/>
 
     <permission
         android:name="${applicationId}.permission.GRID_CONTROL"
