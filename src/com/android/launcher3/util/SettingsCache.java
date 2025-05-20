@@ -103,6 +103,7 @@ public class SettingsCache extends ContentObserver {
      * Caches the last seen value for registered keys.
      */
     private final Map<Uri, Boolean> mKeyCache = new ConcurrentHashMap<>();
+    private final Map<Uri, Integer> mIntKeyCache = new ConcurrentHashMap<>();
     private final Map<Uri, MutableListenableRef<Boolean>> mListenerMap = new ConcurrentHashMap<>();
     private final Set<Uri> mUrisEnabledByDefault;
     protected final ContentResolver mResolver;
@@ -135,6 +136,9 @@ public class SettingsCache extends ContentObserver {
         // value will exist
         boolean newVal = computeNewValue(uri);
         mKeyCache.put(uri, newVal);
+        if (mIntKeyCache.containsKey(uri)) {
+            updateIntValue(uri, 1);
+        }
         MutableListenableStream<Boolean> listeners = mListenerMap.get(uri);
         if (listeners == null) {
             return;
@@ -149,6 +153,26 @@ public class SettingsCache extends ContentObserver {
     @AnyThread
     public boolean getValue(Uri keySetting) {
         return mKeyCache.computeIfAbsent(keySetting, this::computeNewValue);
+    }
+
+    /**
+     * Returns the int value for this classes key from the cache. If not in cache, will call
+     * {@link #updateIntValue(Uri, int)} to fetch.
+     */
+    public int getIntValue(Uri keySetting) {
+        return getIntValue(keySetting, 1);
+    }
+
+    /**
+     * Returns the int value for this classes key from the cache. If not in cache, will call
+     * {@link #updateIntValue(Uri, int)} to fetch.
+     */
+    public int getIntValue(Uri keySetting, int defaultValue) {
+        if (mIntKeyCache.containsKey(keySetting)) {
+            return mIntKeyCache.get(keySetting);
+        } else {
+            return updateIntValue(keySetting, defaultValue);
+        }
     }
 
     private void registerUriAsync(Uri uri) {
@@ -210,6 +234,21 @@ public class SettingsCache extends ContentObserver {
             newVal = Settings.Secure.getInt(mResolver, key, defaultValue) == 1;
         }
 
+        return newVal;
+    }
+
+    private int updateIntValue(Uri keyUri, int defaultValue) {
+        String key = keyUri.getLastPathSegment();
+        int newVal;
+        if (keyUri.toString().startsWith(SYSTEM_URI_PREFIX)) {
+            newVal = Settings.System.getInt(mResolver, key, defaultValue);
+        } else if (keyUri.toString().startsWith(GLOBAL_URI_PREFIX)) {
+            newVal = Settings.Global.getInt(mResolver, key, defaultValue);
+        } else { // SETTING_SECURE
+            newVal = Settings.Secure.getInt(mResolver, key, defaultValue);
+        }
+
+        mIntKeyCache.put(keyUri, newVal);
         return newVal;
     }
 }

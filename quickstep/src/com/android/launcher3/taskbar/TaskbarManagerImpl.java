@@ -143,6 +143,8 @@ public class TaskbarManagerImpl {
 
     public static final Uri NAVIGATION_BAR_HINT_URI = Settings.System.getUriFor(
             "navigation_bar_hint");
+    public static final Uri NAV_BAR_IME = Settings.Secure.getUriFor(
+            "sysui_show_nav_bar_ime");
     private final Context mBaseContext;
     private final int mPrimaryDisplayId;
     private final TaskbarNavButtonCallbacks mNavCallbacks;
@@ -362,6 +364,19 @@ public class TaskbarManagerImpl {
                     return Unit.INSTANCE;
                 });
         cleanupTasks.addCloseable(getTaskbarUiThread(), navBarHintSafeCloseable);
+
+        AtomicBoolean navBarImeInitialized = new AtomicBoolean(false);
+        var navBarImeSafeCloseable = settingsCache.getListenableRef(NAV_BAR_IME).forEach(
+                getTaskbarUiThread(),
+                v -> {
+                    if (!navBarImeInitialized.getAndSet(true)) {
+                        return Unit.INSTANCE;
+                    }
+                    Toast.makeText(mBaseContext, R.string.restarting_launcher_changes, Toast.LENGTH_SHORT).show();
+                    Utilities.restart();
+                    return Unit.INSTANCE;
+                });
+        cleanupTasks.addCloseable(getTaskbarUiThread(), navBarImeSafeCloseable);
 
         SimpleBroadcastReceiver shutdownReceiver = new SimpleBroadcastReceiver(
                 mBaseContext,
