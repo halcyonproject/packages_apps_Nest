@@ -18,59 +18,64 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:launcher="http://schemas.android.com/apk/res-auto">
 
-    <Preference
+    <com.android.launcher3.halcyon.SettingsPreference
         android:key="icons"
         android:title="@string/icons_category_title"
         android:summary="@string/icons_category_summary"
-        android:icon="@drawable/ic_homepage_icons">
+        android:icon="@drawable/ic_dashboard_icon"
+        android:layout="@layout/nest_homepage_preference">
     <intent
             android:action="android.settings.APPLICATION_DETAILS_SETTINGS"
             android:targetPackage="com.android.launcher3"
             android:targetClass="com.android.launcher3.settings.SettingsIcons" />
-    </Preference>
+    </com.android.launcher3.halcyon.SettingsPreference>
 
-    <Preference
+    <com.android.launcher3.halcyon.SettingsPreference
         android:key="home_screen"
         android:title="@string/home_category_title"
         android:summary="@string/home_category_summary"
-        android:icon="@drawable/ic_homepage_homescreen">
+        android:icon="@drawable/ic_dashboard_home"
+        android:layout="@layout/nest_homepage_preference">
     <intent
             android:action="android.settings.APPLICATION_DETAILS_SETTINGS"
             android:targetPackage="com.android.launcher3"
             android:targetClass="com.android.launcher3.settings.SettingsHomescreen" />
-    </Preference>
+    </com.android.launcher3.halcyon.SettingsPreference>
 
-    <Preference
+    <com.android.launcher3.halcyon.SettingsPreference
         android:key="app_drawer"
         android:title="@string/app_drawer_category_title"
         android:summary="@string/app_drawer_category_summary"
-        android:icon="@drawable/ic_homepage_appdrawer">
+        android:icon="@drawable/ic_dashboard_drawer"
+        android:layout="@layout/nest_homepage_preference">
     <intent
             android:action="android.settings.APPLICATION_DETAILS_SETTINGS"
             android:targetPackage="com.android.launcher3"
             android:targetClass="com.android.launcher3.settings.SettingsAppDrawer" />
-    </Preference>
+    </com.android.launcher3.halcyon.SettingsPreference>
 
-    <Preference
+    <com.android.launcher3.halcyon.SettingsPreference
         android:key="recents"
         android:title="@string/recents_category_title"
         android:summary="@string/recents_category_summary"
-        android:icon="@drawable/ic_homepage_recents">
+        android:icon="@drawable/ic_dashboard_recent"
+        android:layout="@layout/nest_homepage_preference">
     <intent
             android:action="android.settings.APPLICATION_DETAILS_SETTINGS"
             android:targetPackage="com.android.launcher3"
             android:targetClass="com.android.launcher3.settings.SettingsRecents" />
-    </Preference>
+    </com.android.launcher3.halcyon.SettingsPreference>
 
-    <Preference
+    <com.android.launcher3.halcyon.SettingsPreference
         android:key="miscellaneous"
         android:title="@string/misc_category_title"
         android:summary="@string/misc_category_summary"
-        android:icon="@drawable/ic_homepage_misc">
+        android:icon="@drawable/ic_dashboard_misc"
+        android:layout="@layout/nest_homepage_preference">
     <intent
             android:action="android.settings.APPLICATION_DETAILS_SETTINGS"
             android:targetPackage="com.android.launcher3"
             android:targetClass="com.android.launcher3.settings.SettingsMisc" />
-    </Preference>
+    </com.android.launcher3.halcyon.SettingsPreference>
 
 </androidx.preference.PreferenceScreen>

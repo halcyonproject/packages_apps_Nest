@@ -287,7 +287,10 @@ java_import {
 android_library {
     name: "Launcher3ResLib",
     srcs: [],
-    resource_dirs: ["res"],
+    resource_dirs: [
+        "res",
+        "nest/res"
+    ],
     static_libs: [
         "dynamiccolors",
         "LauncherPluginLib",

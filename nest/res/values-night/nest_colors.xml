@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="halcyon_icon_background">@android:color/system_accent1_200</color>
+    <color name="halcyon_icon_foreground">@android:color/system_neutral1_900</color>
+
+</resources>
