@@ -17,9 +17,12 @@ public class QsbContainerView {
         if (providerPkg == null) {
             SearchManager searchManager = context.getSystemService(SearchManager.class);
             if (searchManager != null) {
-                ComponentName componentName = searchManager.getGlobalSearchActivity();
-                if (componentName != null) {
-                    providerPkg = componentName.getPackageName();
+                try {
+                    ComponentName componentName = searchManager.getGlobalSearchActivity();
+                    if (componentName != null) {
+                        providerPkg = componentName.getPackageName();
+                    }
+                } catch (IllegalStateException e) {
                 }
             }
         }
