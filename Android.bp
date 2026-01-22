@@ -465,7 +465,7 @@ android_library {
 // Build rule for Launcher3 app.
 //
 android_app {
-    name: "Launcher3",
+    name: "Nest",
     defaults: [
         "launcher-non-platform-apis-defaults",
         "launcher_compose_defaults",
@@ -624,7 +624,7 @@ android_library {
 
 // Build rule for Quickstep app.
 android_app {
-    name: "Launcher3QuickStep",
+    name: "NestQuickStep",
     static_libs: ["Launcher3QuickStepLib"],
     optimize: {
         proguard_flags_files: [":launcher-proguard-rules"],
@@ -666,7 +666,7 @@ android_app {
 // Note that the following two rules are exactly same, and should
 // eventually be merged into a single target
 android_app {
-    name: "Launcher3Go",
+    name: "Nest3Go",
     static_libs: ["Launcher3GoLib"],
     resource_dirs: [],
 
@@ -687,6 +687,8 @@ android_app {
         "Launcher2",
         "Launcher3",
         "Launcher3QuickStep",
+        "Nest",
+        "NestQuickStep",
     ],
     required: ["privapp_whitelist_com.android.launcher3"],
 
@@ -703,7 +705,7 @@ android_app {
 }
 
 android_app {
-    name: "Launcher3QuickStepGo",
+    name: "NestQuickStepGo",
     static_libs: ["Launcher3GoLib"],
     resource_dirs: [],
 
