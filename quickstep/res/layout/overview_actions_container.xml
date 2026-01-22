@@ -30,37 +30,42 @@
         android:layout_gravity="bottom|center_horizontal"
         android:orientation="horizontal">
 
-        <Button
+        <ImageButton
             android:id="@+id/action_screenshot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_screenshot"
-            android:text="@string/recents_screenshot_title"
+            style="@style/NestOverviewActionButton"
+            android:layout_width="60dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_screenshot"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/recents_screenshot_title"
             android:visibility="gone" />
 
         <Button
             android:id="@+id/action_split"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/overview_actions_button_spacing"
-            android:text="@string/action_split"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/action_lens"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="6dp"
-            android:drawableStart="@drawable/ic_lens"
-            android:text="@string/recents_lens_title"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:visibility="gone" />
 
         <Button
             android:id="@+id/action_clear_all"
+            android:background="@drawable/recent_clear_all_button"
+            android:textSize="14.0sp"
+            android:textColor="?android:textColorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_clear_all"
-            android:text="@string/recents_clear_all_title"
+            android:text="@string/recents_clear_all"
+            style="@style/RecentClearCActionButton"
+            android:theme="@style/ThemeControlHighlightWorkspaceColor"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/action_lens"
+            style="@style/NestOverviewActionButton"
+            android:layout_width="60dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_lens"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/recents_lens_title"
             android:visibility="gone" />
 
     </LinearLayout>
