@@ -1110,7 +1110,13 @@ public class BubbleTextView extends TextView implements ItemInfoUpdateReceiver,
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int height = MeasureSpec.getSize(heightMeasureSpec);
-        if (mCenterVertically || !mShouldShowLabel) {
+        
+        // Check if we are in a context where centering should NOT happen
+        // Usually, DISPLAY_WORKSPACE (0) or DISPLAY_ALL_APPS (1) are the targets for the "hide label" center logic.
+        // If mDisplay is anything else (like the default else case in your constructor), we skip it.
+        boolean shouldApplyHidingCenter = (mDisplay == DISPLAY_WORKSPACE || mDisplay == DISPLAY_ALL_APPS || mDisplay == DISPLAY_FOLDER);
+
+        if ((mCenterVertically || (!mShouldShowLabel && shouldApplyHidingCenter))) {
             Paint.FontMetrics fm = getPaint().getFontMetrics();
             int textHeight = mShouldShowLabel ? (int) Math.ceil(fm.bottom - fm.top) * getCellSpecMaxTextLineCount(): 0;
             int cellHeightPx = mIconSize + getCompoundDrawablePadding() + textHeight;
