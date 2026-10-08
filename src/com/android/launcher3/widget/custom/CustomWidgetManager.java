@@ -32,6 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
+import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.dagger.ApplicationContext;
 import com.android.launcher3.dagger.LauncherAppSingleton;
 import com.android.launcher3.dagger.LauncherBaseAppComponent;
@@ -77,6 +78,7 @@ public class CustomWidgetManager implements PluginListener<CustomWidgetPlugin> {
     CustomWidgetManager(@ApplicationContext Context context,
             PluginManagerWrapper pluginManager,
             @Named(NAMED_CUSTOM_WIDGETS) Set<CustomWidget> customWidgetSet,
+            InvariantDeviceProfile idp,
             DaggerSingletonTracker tracker) {
         mContext = context;
         mAppWidgetManager = AppWidgetManager.getInstance(context);
@@ -87,6 +89,21 @@ public class CustomWidgetManager implements PluginListener<CustomWidgetPlugin> {
         for (CustomWidget w : customWidgetSet) {
             onCustomWidgetAdded(w);
         }
+
+        // When the grid changes (e.g. user switches from 5x5 to 4x5), the Smartspace widget's
+        // spanX/spanY must be recomputed from the new IDP, otherwise the widget record in the
+        // database no longer fits the grid and the launcher drops it from the workspace.
+        InvariantDeviceProfile.OnIDPChangeListener idpListener = modelPropertiesChanged -> {
+            for (CustomAppWidgetProviderInfo info : mInfos) {
+                CustomWidget widget = mWidgets.get(info.provider);
+                if (widget != null) {
+                    widget.updateWidgetInfo(mContext, info);
+                }
+            }
+            mWidgetRefreshCallbacks.forEach(MAIN_EXECUTOR::execute);
+        };
+        idp.addOnChangeListener(idpListener);
+        tracker.addCloseable(() -> idp.removeOnChangeListener(idpListener));
     }
 
     private void onCustomWidgetAdded(CustomWidget widget) {

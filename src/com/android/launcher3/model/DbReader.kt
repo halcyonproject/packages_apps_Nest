@@ -35,6 +35,7 @@ import com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE
 import com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APPLICATION
 import com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APPWIDGET
 import com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_APP_GROUP
+import com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_CUSTOM_APPWIDGET
 import com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT
 import com.android.launcher3.LauncherSettings.Favorites.ITEM_TYPE_FOLDER
 import com.android.launcher3.LauncherSettings.Favorites.SCREEN
@@ -157,19 +158,23 @@ class DbReader(val mDb: SQLiteDatabase, val mTableName: String, val mContext: Co
                         entry.mIntent = c.intentString
                     }
 
-                    ITEM_TYPE_APPWIDGET -> {
+                    ITEM_TYPE_APPWIDGET,
+                    ITEM_TYPE_CUSTOM_APPWIDGET -> {
                         val provider = c.appWidgetProvider!!
                         entry.mProvider = provider
                         entry.appWidgetId = c.appWidgetId
                         val cn = ComponentName.unflattenFromString(provider)
 
-                        val spans: Point? =
-                            widgetManagerHelper
-                                .getLauncherAppWidgetInfo(entry.appWidgetId, cn)
-                                ?.minSpans
+                        val info = widgetManagerHelper.getLauncherAppWidgetInfo(entry.appWidgetId, cn)
+                        val spans: Point? = info?.minSpans
                         if (spans != null) {
-                            entry.minSpanX = if (spans.x > 0) spans.x else entry.spanX
-                            entry.minSpanY = if (spans.y > 0) spans.y else entry.spanY
+                            entry.minSpanX = if (spans.x > 0) spans.x else
+                                // minSpans returns -1 for non-resizable axes; fall back to the
+                                // live spanX from the provider (already updated for the new grid)
+                                // rather than the stale spanX stored in the DB.
+                                (info.spanX.takeIf { it > 0 } ?: entry.spanX)
+                            entry.minSpanY = if (spans.y > 0) spans.y else
+                                (info.spanY.takeIf { it > 0 } ?: entry.spanY)
                         } else {
                             // Assume that the widget be resized down to 2x2
                             entry.minSpanY = 2

@@ -17,6 +17,7 @@ import android.util.ArrayMap;
 import android.util.Log;
 
 import com.android.launcher3.LauncherSettings.Favorites;
+import com.android.launcher3.qsb.SmartspaceCustomWidget;
 import com.android.launcher3.util.Partner;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.util.XmlElement;
@@ -82,6 +83,8 @@ public class DefaultLayoutParser extends AutoInstallsLayout {
         parsers.put(TAG_FAVORITE, new AppShortcutWithUriParser());
         parsers.put(TAG_APPWIDGET, new AppWidgetParser());
         parsers.put(TAG_SEARCH_WIDGET, new SearchWidgetParser());
+        parsers.put(TAG_SMARTSPACE_WIDGET,
+                new SearchWidgetParser(SmartspaceCustomWidget.INSTANCE.getId()));
         parsers.put(TAG_SHORTCUT, new ShortcutParser());
         parsers.put(TAG_RESOLVE, new ResolveParser());
         parsers.put(TAG_FOLDER, new MyFolderParser());

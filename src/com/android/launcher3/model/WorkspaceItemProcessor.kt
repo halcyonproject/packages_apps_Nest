@@ -63,6 +63,8 @@ import com.android.launcher3.provider.LauncherDbUtils.asSequence
 import com.android.launcher3.shortcuts.ShortcutKey
 import com.android.launcher3.shortcuts.ShortcutRequest
 import com.android.launcher3.util.ApiWrapper
+import com.android.launcher3.Utilities
+import com.android.launcher3.qsb.SmartspaceCustomWidget
 import com.android.launcher3.util.ApplicationInfoWrapper
 import com.android.launcher3.util.IntSparseArrayMap
 import com.android.launcher3.util.PackageManagerHelper
@@ -523,8 +525,22 @@ class WorkspaceItemProcessor(
      */
     private fun processWidget() {
         val component = ComponentName.unflattenFromString(c.appWidgetProvider!!)!!
+        val isSmartspace =
+            component.packageName == LauncherAppWidgetProviderInfo.CUSTOM_WIDGET_PACKAGE &&
+                component.className == SmartspaceCustomWidget.id
+        if (isSmartspace && !Utilities.showSmartspace(context)) {
+            // The row stays in the database, so switching the pref back on restores it.
+            return
+        }
         val appWidgetInfo = LauncherAppWidgetInfo(c.appWidgetId, component)
         c.applyCommonProperties(appWidgetInfo)
+        if (isSmartspace) {
+            // Smartspace must always remain fixed at (0, 0) on the first workspace screen.
+            appWidgetInfo.cellX = 0
+            appWidgetInfo.cellY = 0
+            appWidgetInfo.screenId = 0
+            appWidgetInfo.container = Favorites.CONTAINER_DESKTOP
+        }
         appWidgetInfo.spanX = c.spanX
         appWidgetInfo.spanY = c.spanY
         appWidgetInfo.options = c.options

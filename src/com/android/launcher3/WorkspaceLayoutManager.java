@@ -25,6 +25,7 @@ import com.android.launcher3.celllayout.CellPosMapper.CellPos;
 import com.android.launcher3.folder.Folder;
 import com.android.launcher3.folder.FolderIcon;
 import com.android.launcher3.model.data.ItemInfo;
+import com.android.launcher3.qsb.SmartspaceViewContainer;
 import com.android.launcher3.touch.ItemLongClickListener;
 import com.android.launcher3.util.IntSet;
 
@@ -140,6 +141,10 @@ public interface WorkspaceLayoutManager {
             lp.isLockedToGrid = false;
         }
 
+        if (child instanceof SmartspaceViewContainer) {
+            lp.canReorder = false;
+        }
+
         // Get the canonical child id to uniquely represent this view in this screen
         ItemInfo info = (ItemInfo) child.getTag();
         int childId = info.getViewId();
@@ -161,7 +166,7 @@ public interface WorkspaceLayoutManager {
         //    2. DuplicateClickableBoundsCheck failure when the bounds of
         //    search_container_workspace doesn't match its draggable child.
         // Retain the condition to avoid regression of the two issues above.
-        if (childId != R.id.search_container_workspace) {
+        if (childId != R.id.search_container_workspace && !(child instanceof SmartspaceViewContainer)) {
             child.setOnLongClickListener(getWorkspaceChildOnLongClickListener());
         }
         if (child instanceof DropTarget) {

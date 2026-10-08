@@ -528,6 +528,7 @@ android_library {
     // dependency. See b/208647810 for how this can go wrong.
     static_libs: [
         "SystemUI-statsd",
+        "bcsmartspace-google",
         "QuickstepResLib",
         // Compose dep
         "androidx.compose.runtime_runtime",

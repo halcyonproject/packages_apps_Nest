@@ -60,6 +60,9 @@
     <!-- Floating window -->
     <uses-permission android:name="com.libremobileos.permission.START_FREEFORM" />
 
+    <permission android:name="com.google.android.apps.nexuslauncher.permission.QSB" android:protectionLevel="signatureOrSystem"/>
+    <uses-permission android:name="com.google.android.apps.nexuslauncher.permission.QSB"/>
+
     <permission
         android:name="${applicationId}.permission.GRID_CONTROL"
         android:knownCerts="@array/grid_control_known_signers"

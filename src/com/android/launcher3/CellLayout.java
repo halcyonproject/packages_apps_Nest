@@ -1408,10 +1408,12 @@ public class CellLayout extends ViewGroup {
             CellLayoutLayoutParams lp = (CellLayoutLayoutParams) child.getLayoutParams();
             CellAndSpan c = solution.map.get(child);
             if (c != null) {
-                lp.setTmpCellX(c.cellX);
-                lp.setTmpCellY(c.cellY);
-                lp.cellHSpan = c.spanX;
-                lp.cellVSpan = c.spanY;
+                if (lp.canReorder) {
+                    lp.setTmpCellX(c.cellX);
+                    lp.setTmpCellY(c.cellY);
+                    lp.cellHSpan = c.spanX;
+                    lp.cellVSpan = c.spanY;
+                }
                 mTmpOccupied.markCells(c, true);
             }
         }
@@ -1428,10 +1430,13 @@ public class CellLayout extends ViewGroup {
         for (int i = 0; i < childCount; i++) {
             View child = mShortcutsAndWidgets.getChildAt(i);
             if (child == dragView) continue;
+            CellLayoutLayoutParams lp = (CellLayoutLayoutParams) child.getLayoutParams();
             CellAndSpan c = solution.map.get(child);
             if (c != null) {
-                animateChildToPosition(child, c.cellX, c.cellY, REORDER_ANIMATION_DURATION, 0,
-                        DESTRUCTIVE_REORDER, false);
+                if (lp.canReorder) {
+                    animateChildToPosition(child, c.cellX, c.cellY, REORDER_ANIMATION_DURATION, 0,
+                            DESTRUCTIVE_REORDER, false);
+                }
                 occupied.markCells(c, true);
             }
         }
@@ -1448,11 +1453,12 @@ public class CellLayout extends ViewGroup {
         for (int i = 0; i < childCount; i++) {
             View child = mShortcutsAndWidgets.getChildAt(i);
             if (child == dragView) continue;
+            CellLayoutLayoutParams lp = (CellLayoutLayoutParams) child.getLayoutParams();
+            if (!lp.canReorder) continue;
             CellAndSpan c = solution.map.get(child);
             boolean skip = mode == ReorderPreviewAnimation.MODE_HINT
                     && !solution.intersectingViews.contains(child);
 
-            CellLayoutLayoutParams lp = (CellLayoutLayoutParams) child.getLayoutParams();
             if (c != null && !skip && (child instanceof Reorderable)) {
                 ReorderPreviewAnimation rha = new ReorderPreviewAnimation(child, mode,
                         lp.getCellX(), lp.getCellY(), c.cellX, c.cellY, c.spanX, c.spanY,
@@ -1488,6 +1494,9 @@ public class CellLayout extends ViewGroup {
             // We do a null check here because the item info can be null in the case of the
             // AllApps button in the hotseat.
             if (info != null && child != dragView) {
+                if (!lp.canReorder) {
+                    continue;
+                }
                 CellPos presenterPos = mActivity.getCellPosMapper().mapModelToPresenter(info);
                 final boolean requiresDbUpdate = (presenterPos.cellX != lp.getTmpCellX()
                         || presenterPos.cellY != lp.getTmpCellY() || info.spanX != lp.cellHSpan

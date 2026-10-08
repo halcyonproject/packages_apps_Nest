@@ -34,6 +34,7 @@ import android.app.WallpaperManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 
@@ -147,6 +148,7 @@ public final class Utilities {
     public static final String LENS_ACTIVITY = "com.google.android.apps.search.lens.LensExportedActivity";
     public static final String LENS_URI = "google://lens";
     public static final String LENS_SHARE_ACTIVITY = "com.google.android.apps.search.lens.LensShareEntryPointActivity";
+    public static final String KEY_SMARTSPACE = "pref_smartspace";
 
     private static final String FREEFORM_PACKAGE = "com.libremobileos.freeform";
     private static final String FREEFORM_INTENT = "com.libremobileos.freeform.START_FREEFORM";
@@ -1006,6 +1008,11 @@ public final class Utilities {
             return false;
         }
         return ActivityInfo.isResizeableMode(info.resizeMode);
+    }
+
+    public static boolean showSmartspace(Context context) {
+        SharedPreferences prefs = LauncherPrefs.getPrefs(context.getApplicationContext());
+        return prefs.getBoolean(KEY_SMARTSPACE, true);
     }
 
     public static void startLmoFreeform(Context context, ComponentName activity,

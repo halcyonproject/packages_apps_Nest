@@ -98,6 +98,7 @@ public class CellLayoutLayoutParams extends ViewGroup.MarginLayoutParams {
         this.mTmpCellX = source.getTmpCellX();
         this.mTmpCellY = source.getTmpCellY();
         this.useTmpCoords = source.useTmpCoords;
+        this.canReorder = source.canReorder;
     }
 
     public CellLayoutLayoutParams(int cellX, int cellY, int cellHSpan, int cellVSpan) {

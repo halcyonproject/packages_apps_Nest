@@ -37,6 +37,7 @@ import com.android.launcher3.popup.FolderSystemShortcuts
 import com.android.launcher3.popup.PopupDataMapper
 import com.android.launcher3.popup.PopupDataRepository.Companion.POPUP_DATA_MAPPER
 import com.android.launcher3.qsb.OseCustomWidget
+import com.android.launcher3.qsb.SmartspaceCustomWidget
 import com.android.launcher3.widget.custom.CustomWidget
 import com.android.launcher3.widget.custom.CustomWidgetManager.NAMED_CUSTOM_WIDGETS
 import dagger.Binds
@@ -88,6 +89,12 @@ abstract class LauncherModelModule {
         @Named(NAMED_CUSTOM_WIDGETS)
         @JvmStatic
         fun monoSearchCustomWidget(): CustomWidget = OseCustomWidget
+
+        @Provides
+        @IntoSet
+        @Named(NAMED_CUSTOM_WIDGETS)
+        @JvmStatic
+        fun smartspaceCustomWidget(): CustomWidget = SmartspaceCustomWidget
 
         @Provides
         @JvmStatic

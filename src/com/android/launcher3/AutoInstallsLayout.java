@@ -52,6 +52,7 @@ import com.android.launcher3.model.data.LauncherAppWidgetInfo;
 import com.android.launcher3.model.data.WorkspaceItemInfo;
 import com.android.launcher3.pm.UserCache;
 import com.android.launcher3.qsb.OseCustomWidget;
+import com.android.launcher3.qsb.SmartspaceCustomWidget;
 import com.android.launcher3.shortcuts.ShortcutKey;
 import com.android.launcher3.util.ApiWrapper;
 import com.android.launcher3.util.IntArray;
@@ -134,6 +135,7 @@ public class AutoInstallsLayout {
     public static final String TAG_APP_PAIR = "apppair";
     public static final String TAG_APPWIDGET = "appwidget";
     protected static final String TAG_SEARCH_WIDGET = "searchwidget";
+    protected static final String TAG_SMARTSPACE_WIDGET = "smartspacewidget";
     public static final String TAG_SHORTCUT = "shortcut";
     private static final String TAG_EXTRA = "extra";
 
@@ -364,6 +366,8 @@ public class AutoInstallsLayout {
         parsers.put(TAG_APP_PAIR, new AppPairParser());
         parsers.put(TAG_APPWIDGET, new PendingWidgetParser());
         parsers.put(TAG_SEARCH_WIDGET, new SearchWidgetParser());
+        parsers.put(TAG_SMARTSPACE_WIDGET,
+                new SearchWidgetParser(SmartspaceCustomWidget.INSTANCE.getId()));
         parsers.put(TAG_SHORTCUT, new ShortcutParser());
         return parsers;
     }
@@ -542,9 +546,19 @@ public class AutoInstallsLayout {
 
     protected class SearchWidgetParser implements TagParser {
 
+        private final String mWidgetId;
+
+        protected SearchWidgetParser() {
+            this(OseCustomWidget.INSTANCE.getId());
+        }
+
+        protected SearchWidgetParser(String widgetId) {
+            mWidgetId = widgetId;
+        }
+
         @Override
         public int parseAndAdd(XmlElement element) throws XmlPullParserException, IOException {
-            var cn = new ComponentName(CUSTOM_WIDGET_PACKAGE, OseCustomWidget.INSTANCE.getId());
+            var cn = new ComponentName(CUSTOM_WIDGET_PACKAGE, mWidgetId);
             mValues.put(Favorites.SPANX, element.get(ATTR_SPAN_X));
             mValues.put(Favorites.SPANY, element.get(ATTR_SPAN_Y));
             mValues.put(Favorites.ITEM_TYPE, Favorites.ITEM_TYPE_APPWIDGET);

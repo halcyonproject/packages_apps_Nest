@@ -32,6 +32,7 @@ import com.android.launcher3.model.data.ItemInfo
 import com.android.launcher3.model.data.LauncherAppWidgetInfo
 import com.android.launcher3.model.data.WorkspaceItemInfo
 import com.android.launcher3.provider.LauncherDbUtils.itemIdMatch
+import com.android.launcher3.qsb.SmartspaceCustomWidget
 import com.android.launcher3.ui.DefaultLauncherUiStateNotifier
 import com.android.launcher3.ui.LauncherUiStateNotifier
 import com.android.launcher3.util.ContentWriter
@@ -382,6 +383,13 @@ open class ModelWriter(
         spanX: Int,
         spanY: Int,
     ) {
+        if (
+            item is LauncherAppWidgetInfo &&
+                item.providerName?.className == SmartspaceCustomWidget.id
+        ) {
+            // Smartspace position is permanently fixed at (0, 0) on screen 0.
+            return
+        }
         updateItemModel(item, container, screenId, cellX, cellY)
         item.spanX = spanX
         item.spanY = spanY
