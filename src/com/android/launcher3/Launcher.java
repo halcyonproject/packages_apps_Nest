@@ -60,10 +60,12 @@ import static com.android.launcher3.LauncherState.ALL_APPS;
 import static com.android.launcher3.LauncherState.BACKGROUND_APP;
 import static com.android.launcher3.LauncherState.EDIT_MODE;
 import static com.android.launcher3.LauncherState.FLAG_MULTI_PAGE;
+import static com.android.launcher3.LauncherState.FLAG_NON_INTERACTIVE;
 import static com.android.launcher3.LauncherState.FLAG_WORKSPACE_ICONS_BEING_DRAGGED;
 import static com.android.launcher3.LauncherState.NORMAL;
 import static com.android.launcher3.LauncherState.NO_OFFSET;
 import static com.android.launcher3.LauncherState.NO_SCALE;
+import static com.android.launcher3.Utilities.postAsyncCallback;
 import static com.android.launcher3.Utilities.shouldEnableMouseInteractionChanges;
 import static com.android.launcher3.Workspace.mapOverCellLayouts;
 import static com.android.launcher3.anim.AnimatorListeners.forEndCallback;
@@ -373,6 +375,9 @@ public class Launcher extends StatefulActivity<LauncherState>
 
     protected LauncherOverlayManager mOverlayManager;
     protected LauncherDragController mDragController;
+    // If true, overlay callbacks are deferred
+    private boolean mDeferOverlayCallbacks;
+    private final Runnable mDeferredOverlayCallbacks = this::checkIfOverlayStillDeferred;
 
     protected long mLastTouchUpTime = -1;
     private boolean mTouchInProgress;
@@ -597,6 +602,17 @@ public class Launcher extends StatefulActivity<LauncherState>
             mOverlayManager.onActivityDestroyed();
         }
         mOverlayManager = getDefaultOverlay();
+        if (getRootView().isAttachedToWindow()) {
+            mOverlayManager.onAttachedToWindow();
+        }
+        mDeferOverlayCallbacks = true;
+        checkIfOverlayStillDeferred();
+    }
+
+    @Override
+    public void dispatchDeviceProfileChanged() {
+        super.dispatchDeviceProfileChanged();
+        mOverlayManager.onDeviceProvideChanged();
     }
 
     /**
@@ -934,6 +950,11 @@ public class Launcher extends StatefulActivity<LauncherState>
     @Override
     protected void onStop() {
         super.onStop();
+        if (mDeferOverlayCallbacks) {
+            checkIfOverlayStillDeferred();
+        } else {
+            mOverlayManager.onActivityStopped();
+        }
         hideKeyboard();
         logStopAndResume(false /* isResume */);
         mAppWidgetHolder.setActivityStarted(false);
@@ -946,6 +967,10 @@ public class Launcher extends StatefulActivity<LauncherState>
     protected void onStart() {
         TraceHelper.INSTANCE.beginSection(ON_START_EVT);
         super.onStart();
+        if (!mDeferOverlayCallbacks) {
+            mOverlayManager.onActivityStarted();
+        }
+
         mAppWidgetHolder.setActivityStarted(true);
         TraceHelper.INSTANCE.endSection();
     }
@@ -1020,9 +1045,45 @@ public class Launcher extends StatefulActivity<LauncherState>
         logger.log(event);
     }
 
+    private void scheduleDeferredCheck() {
+        mHandler.removeCallbacks(mDeferredOverlayCallbacks);
+        postAsyncCallback(mHandler, mDeferredOverlayCallbacks);
+    }
+
+    private void checkIfOverlayStillDeferred() {
+        if (!mDeferOverlayCallbacks) {
+            return;
+        }
+        if (isStarted() && (!hasBeenResumed()
+                || mStateManager.getState().hasFlag(FLAG_NON_INTERACTIVE))) {
+            return;
+        }
+        mDeferOverlayCallbacks = false;
+
+        // Move the client to the correct state. Calling the same method twice is no-op.
+        if (isStarted()) {
+            mOverlayManager.onActivityStarted();
+        }
+        if (hasBeenResumed()) {
+            mOverlayManager.onActivityResumed();
+        } else {
+            mOverlayManager.onActivityPaused();
+        }
+        if (!isStarted()) {
+            mOverlayManager.onActivityStopped();
+        }
+    }
+
+    public void deferOverlayCallbacksUntilNextResumeOrStop() {
+        mDeferOverlayCallbacks = true;
+    }
+
     @Override
     public void onStateSetStart(LauncherState state) {
         super.onStateSetStart(state);
+        if (mDeferOverlayCallbacks) {
+            scheduleDeferredCheck();
+        }
         addActivityFlags(ACTIVITY_STATE_TRANSITION_ACTIVE);
 
         if (state.hasFlag(FLAG_WORKSPACE_ICONS_BEING_DRAGGED)) {
@@ -1110,6 +1171,13 @@ public class Launcher extends StatefulActivity<LauncherState>
     protected void onResume() {
         TraceHelper.INSTANCE.beginSection(ON_RESUME_EVT);
         super.onResume();
+
+        if (mDeferOverlayCallbacks) {
+            scheduleDeferredCheck();
+        } else {
+            mOverlayManager.onActivityResumed();
+        }
+
         mLauncherUiState.setIsResumedActivity(true);
         DragView.removeAllViews(this);
         TraceHelper.INSTANCE.endSection();
@@ -1128,6 +1196,9 @@ public class Launcher extends StatefulActivity<LauncherState>
         mLastTouchUpTime = -1;
         mDropTargetBar.animateToVisibility(false);
 
+        if (!mDeferOverlayCallbacks) {
+            mOverlayManager.onActivityPaused();
+        }
         mAppWidgetHolder.setActivityResumed(false);
     }
 
@@ -1404,8 +1475,15 @@ public class Launcher extends StatefulActivity<LauncherState>
     private final ScreenOnListener mScreenOnListener = this::onScreenOnChanged;
 
     @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        mOverlayManager.onAttachedToWindow();
+    }
+
+    @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        mOverlayManager.onDetachedFromWindow();
         closeContextMenu();
     }
 
