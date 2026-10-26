@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2026 Halcyon Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- Folder titles -->
+    <string name="google_folder_title" translatable="false">Google</string>
+
+    <!-- General -->
+    <string name="settings_title">Настройки главного экрана</string>
+
+    <!-- Categories -->
+    <string name="home_category_title">Главный экран</string>
+    <string name="home_category_summary">Настройка панели Google и других функций</string>
+    <string name="icons_category_title">Значки</string>
+    <string name="icons_category_summary">Размер значков и другие параметры</string>
+    <string name="app_drawer_category_title">Список приложений</string>
+    <string name="app_drawer_category_summary">Настройка списка приложений</string>
+    <string name="recents_category_title">Недавние приложения</string>
+    <string name="recents_category_summary">Настройка экрана обзора</string>
+    <string name="misc_category_title">Разное</string>
+    <string name="misc_category_summary">Другие параметры</string>
+    <string name="general_category_title">Общие</string>
+    <string name="interface_category_title">Интерфейс</string>
+    <string name="search_bar_category_title">Строка поиска</string>
+    <string name="actions_category_title">Быстрые действия</string>
+
+    <!-- Developer options -->
+    <string name="dev_options_title">Для разработчиков</string>
+    <string name="dev_options_summary">Включайте скрытые функции на свой страх и риск</string>
+
+    <!-- Settings title to show Google Now at -1 screen on launcher. [CHAR LIMIT=50] -->
+    <string name="title_show_google_app">Проведите пальцем, чтобы открыть приложение Google</string>
+    <string name="pref_show_google_now_summary" translatable="false">@string/msg_minus_one_on_left</string>
+    <!-- Settings message explaining when the -1 screen is available on an LTR device. [CHAR LIMIT=100] -->
+    <string name="msg_minus_one_on_left">При проведении вправо с главного экрана</string>
+    <!-- Settings message explaining when the -1 screen is available on an RTL device. [CHAR LIMIT=100] -->
+    <string name="msg_minus_one_on_right">При проведении влево с главного экрана</string>
+
+    <!-- Suggestions -->
+    <string name="suggestion_pref_screen_title">Рекомендации</string>
+    <string name="suggestion_pref_screen_desc">Рекомендации для списка приложений и главного экрана</string>
+
+    <!-- Restart launcher -->
+    <string name="pref_restart_title">Перезапуск</string>
+    <string name="pref_restart_summary">Перезапустите Launcher вручную, чтобы применить ожидающие изменения</string>
+    <string name="restarting_launcher">Перезапуск Launcher…</string>
+    <string name="restarting_launcher_changes">Перезапуск Launcher для применения изменений…</string>
+    <string name="updating_launcher_components">Перезапуск Launcher для обновления компонентов…</string>
+
+    <!-- DT2S -->
+    <string name="pref_sleep_gesture_title">Двойное нажатие для выключения экрана</string>
+    <string name="pref_sleep_gesture_summary">Дважды нажмите на пустом месте, чтобы выключить экран</string>
+    <string name="pref_sleep_gesture_haptic_title">Вибрация при двойном нажатии для выключения экрана</string>
+    <string name="pref_sleep_gesture_haptic_summary">Вибрация при использовании жеста двойного нажатия</string>
+
+    <!-- Edit workspace -->
+    <string name="settings_lock_layout_title">Заблокировать макет</string>
+    <string name="settings_lock_layout_summary_on">Значки и виджеты нельзя добавлять, удалять или перемещать на главном экране</string>
+    <string name="settings_lock_layout_summary_off">Значки и виджеты можно добавлять, удалять и перемещать на главном экране</string>
+    <string name="settings_edit_widgets_error">Невозможно добавить виджеты на главный экран</string>
+
+    <!-- Hide labels -->
+    <string name="desktop_show_labels">Подписи значков на рабочем столе</string>
+    <string name="drawer_show_labels">Подписи значков в списке приложений</string>
+
+    <!-- All apps themed icons -->
+    <string name="pref_themed_icons_title">Использовать тематические значки в списке приложений</string>
+    <string name="pref_themed_icons_summary">Использовать те же тематические значки, что и на главном экране</string>
+
+    <!-- Icon size -->
+    <string name="icon_size_title">Размер значков</string>
+
+    <!-- Font size -->
+    <string name="font_size_title">Размер шрифта</string>
+
+    <!-- Pause apps shortcut -->
+    <string name="pause">Приостановить</string>
+    <string name="pause_apps_dialog_title">Приостановить приложение «%1$s»?</string>
+    <string name="pause_apps_dialog_message">Уведомления от приложения «%1$s» будут приостановлены</string>
+    <string name="paused_apps_dialog_title">Приложение приостановлено</string>
+    <string name="paused_apps_dialog_message">Приложение «%1$s» было приостановлено из Launcher</string>
+    <string name="paused_apps_drop_target_label">Приостановить приложение</string>
+
+    <!-- App label -->
+    <string name="icon_two_lines_title">Использовать две строки для названия приложения</string>
+
+    <!-- Kill App recents action shortcut -->
+    <string name="recent_task_option_kill_app">Завершить приложение</string>
+    <string name="recents_app_killed">Приложение завершено</string>
+
+    <!-- Row Height -->
+    <string name="row_height_title">Высота ряда</string>
+
+    <!-- Hotseat Background -->
+    <string name="hotseat_bg_title">Фон панели избранного</string>
+    <string name="hotseat_bg_summary">Добавить полупрозрачный фон панели приложений</string>
+
+    <!-- Background opacity -->
+    <string name="background_opacity_title">Непрозрачность фона</string>
+
+    <!-- Hotseat searchbar -->
+    <string name="label_search">Поиск</string>
+    <string name="label_lens">Google Lens</string>
+    <string name="label_voice_search">Голосовой поиск</string>
+    <string name="dock_search_title">Строка поиска Google</string>
+    <string name="dock_search_summary">Строка поиска на нижней панели</string>
+    <string name="dock_theme_title">Тематические значки</string>
+    <string name="dock_theme_summary">Использовать тематические значки для строки поиска</string>
+    <string name="search_radius_title">Радиус скругления</string>
+
+    <!-- Memory info -->
+    <string name="meminfo_text">Доступно %1$s из %2$s</string>
+    <string name="recents_meminfo_title">Информация о памяти</string>
+
+    <!-- Recents icons -->
+    <string name="recents_screenshot_title">Снимок экрана</string>
+    <string name="recents_clear_all_title">Очистить всё</string>
+    <string name="recents_lens_title">Объектив</string>
+
+</resources>
